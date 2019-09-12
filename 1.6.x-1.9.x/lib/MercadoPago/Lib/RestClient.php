@@ -9,6 +9,11 @@ $GLOBALS["LIB_LOCATION"] = Mage::getBaseDir() . '/lib/MercadoPago/Lib';
 class MercadoPago_Lib_RestClient {
 
     const API_BASE_URL = "https://api.mercadopago.com";
+
+    /**
+     *Plataform Id 
+     */
+    const PLATAFORM_ID = "Magento";    
   
     /**
      *Product Id, identifier used to designate the product, device and version
@@ -32,6 +37,8 @@ class MercadoPago_Lib_RestClient {
         //set x_product_id
         if($method == 'POST'){
           $header_opt[] = "x-product-id: " . self::PRODUCT_ID;
+          $header_opt[] = 'x-platform-id:' . self::PLATAFORM_ID;
+          $header_opt[] = 'x-integrator-id:' . self::$sponsor_id;             
         }      
       
         if (count($extra_params) > 0) {
@@ -169,7 +176,12 @@ class MercadoPago_Lib_RestClient {
     static $url_store = "";
     static $email_admin = "";
     static $country_initial = "";
+    static $sponsor_id = "";    
     static $check_loop = 0;
+
+    public static function setSponsorID($sponsor_id){
+        self::$sponsor_id = $sponsor_id; 
+    }
 
     public static function setModuleVersion($module_version){
         self::$module_version = $module_version; 

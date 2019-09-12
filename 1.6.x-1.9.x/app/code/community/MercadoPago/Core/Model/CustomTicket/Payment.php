@@ -149,6 +149,9 @@ class MercadoPago_Core_Model_CustomTicket_Payment
           $preference['payer']['address']['federal_unit'] = $payment->getAdditionalInformation("address-state");
         }
 
+        $metadata = $this->_getMetadata();
+        $preference['metadata'] = $this->getMetadata($metadata);
+
         Mage::helper('mercadopago')->log("Ticket -> PREFERENCE to POST /v1/payments", 'mercadopago-custom.log', $preference);
 
         /* POST /v1/payments */
@@ -169,4 +172,11 @@ class MercadoPago_Core_Model_CustomTicket_Payment
         return Mage::getUrl('mercadopago/checkout/page', array('_secure' => true));
     }
 
+    public function getMetadata($metadata)
+    {
+        $metadata["checkout"] = "custom";
+        $metadata["checkout_type"] = "ticket";
+      
+        return $metadata;
+    }
 }

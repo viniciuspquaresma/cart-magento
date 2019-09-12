@@ -65,7 +65,7 @@ class MercadoPago_Core_Model_BankTransfer_Payment
 
         return $this;
     }
-
+ 
     public function preparePostPayment()
     {
         //check actual time
@@ -90,6 +90,8 @@ class MercadoPago_Core_Model_BankTransfer_Payment
         $preference['transaction_details']['financial_institution'] = $payment->getAdditionalInformation("financial_institutions");
         $preference['callback_url'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
 
+        $metadata = $this->_getMetadata();
+        $preference['metadata'] = $this->getMetadata($metadata);
 
         $ip = "";
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -112,6 +114,14 @@ class MercadoPago_Core_Model_BankTransfer_Payment
         Mage::helper('mercadopago')->log("Time consumed to create payment (bank transfer): " . $timeConsumed . "s", 'mercadopago-custom.log');
       
         return $response;
+    }
+
+    public function getMetadata($metadata)
+    {
+        $metadata["checkout"] = "custom";
+        $metadata["checkout_type"] = "BankTransfer";
+      
+        return $metadata;
     }
 
     public function getOrderPlaceRedirectUrl()

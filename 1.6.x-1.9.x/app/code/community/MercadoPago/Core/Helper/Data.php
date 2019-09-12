@@ -80,6 +80,7 @@ class MercadoPago_Core_Helper_Data
 
         // set data sdk rest client
         MercadoPago_Lib_RestClient::setModuleVersion((string) Mage::getConfig()->getModuleConfig("MercadoPago_Core")->version);
+        MercadoPago_Lib_RestClient::setSponsorID(Mage::getStoreConfig('payment/mercadopago/sponsor_id'));
         MercadoPago_Lib_RestClient::setUrlStore(Mage::getStoreConfig('web/secure/base_url'));
         MercadoPago_Lib_RestClient::setEmailAdmin(Mage::getStoreConfig('trans_email/ident_general/email'));
         MercadoPago_Lib_RestClient::setCountryInitial(Mage::getStoreConfig('general/country/default'));

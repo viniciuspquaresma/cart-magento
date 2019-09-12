@@ -64,7 +64,7 @@ abstract class MercadoPago_Core_Model_CustomPayment
     {
         return Mage::getSingleton('adminhtml/session_quote');
     }
-
+ 
     /**
      * Retrieves Quote
      *
@@ -96,4 +96,30 @@ abstract class MercadoPago_Core_Model_CustomPayment
     {
         return Mage::getModel('sales/order')->loadByIncrementId($incrementId);
     }
+
+    /**
+     * Create the metadata
+     *
+     * @return array metadata
+     */
+    protected function _getMetadata()
+    {
+        $test_mode = false;
+        if (Mage::getStoreConfig('payment/mercadopago_recurring/sandbox_mode')) {
+            $test_mode = true;
+        }
+
+        $metadata = array(
+            "platform" => MercadoPago_Lib_RestClient::PLATAFORM_ID,
+            "plataform_version" => (string)Mage::getVersion(),
+            "module_version" => (string) Mage::getConfig()->getModuleConfig("MercadoPago_Core")->version,
+            "site" => Mage::getStoreConfig('payment/mercadopago/country'),
+            "sponsor_id" => Mage::getStoreConfig('payment/mercadopago/sponsor_id'),
+            "test_mode" => $test_mode,
+            "details" => ""
+        );
+      
+        return $metadata;
+    }
+
 }

@@ -201,6 +201,9 @@ class MercadoPago_Core_Model_Custom_Payment
             $preference['metadata']['customer_id'] = $payment->getAdditionalInformation("customer_id");
         }
 
+        $metadata = $this->_getMetadata();
+        $preference['metadata'] = $this->getMetadata($metadata);
+                
         //@Gateway_Mode
         if ($payment->getAdditionalInformation("gateway_mode") != "") {
             $preference['processing_mode'] = 'gateway';
@@ -322,6 +325,14 @@ class MercadoPago_Core_Model_Custom_Payment
     public function getCode()
     {
         return $this->_code;
+    }
+
+    public function getMetadata($metadata)
+    {
+        $metadata["checkout"] = "custom";
+        $metadata["checkout_type"] = "credit_card";
+      
+        return $metadata;
     }
 
 }

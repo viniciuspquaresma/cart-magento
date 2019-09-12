@@ -243,6 +243,22 @@ class MercadoPago_Core_Model_Standard_Payment
         $arr['binary_mode'] = Mage::getStoreConfigFlag('payment/mercadopago_standard/binary_mode');
 
         $sponsorId = Mage::getStoreConfig('payment/mercadopago/sponsor_id');
+
+        $test_mode = false;
+        if (Mage::getStoreConfig('payment/mercadopago_recurring/sandbox_mode')) {
+            $test_mode = true;
+        }
+
+        $arr['metadata'] = array(
+            "platform" => MercadoPago_Lib_RestClient::PLATAFORM_ID,
+            "platform_version" => (string)Mage::getVersion(),
+            "module_version" => (string) Mage::getConfig()->getModuleConfig("MercadoPago_Core")->version,
+            "site" => Mage::getStoreConfig('payment/mercadopago/country'),
+            "checkout" => "smart",
+            "sponsor_id" => $sponsorId,
+            "test_mode" => $test_mode
+        ); 
+
         Mage::helper('mercadopago')->log("Sponsor_id", self::LOG_FILE, $sponsorId);
         if (!empty($sponsorId)) {
             Mage::helper('mercadopago')->log("Sponsor_id identificado", self::LOG_FILE, $sponsorId);
